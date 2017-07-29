@@ -1,20 +1,22 @@
 #! /bin/bash
 
+# identify location of fswatch binary
 FSWATCH_PATH="/usr/local/bin/fswatch"
 
-LOCAL_PATH="<Local WatchFolder Path"
+# identify local location of Watchfolder
+LOCAL_WATCHFOLDER_PATH="<Local WatchFolder Path>"
 
 # Set Finished File Folder Path
-TARGET_PATH="Local Transition Destination Path"
+TARGET_TRANSITION_PATH="<Local Transition Destination Path>"
 # Set remote path if using remote destination
-REMOTE_PATH="user@<IP>:<Remote File Path>"
+REMOTE_DESTINATION_PATH="user@<IP>:<Remote File Path>"
 
 # fswatch parameter to control how often a trigger will be detected when watching for a folder change
 LATENCY=3
 
 # Watch for changes and sync (exclude hidden files)
 echo    "Watching for changes. Quit anytime with Ctrl-C."
-${FSWATCH_PATH} -0 --event Updated --event Renamed -l $LATENCY $LOCAL_PATH --exclude="/\.[^/]*$" \
+${FSWATCH_PATH} -0 --event Updated --event Renamed -l $LATENCY $LOCAL_WATCHFOLDER_PATH --exclude="/\.[^/]*$" \
 | while read -d "" event
   do
 # Create Unique temp file name  
@@ -47,13 +49,13 @@ if [ -f "$TriggerFilePath" ]
 	then
 echo ""
 echo "$TriggerFilePath File exists"
-mv "$TriggerFilePath" "$TARGET_PATH"
+mv "$TriggerFilePath" "$TARGET_TRANSITION_PATH"
 echo "$TriggerFileBaseName"
-scpFilePathSource="${TARGET_PATH}${TriggerFileBaseName}"
+scpFilePathSource="${TARGET_TRANSITION_PATH}${TriggerFileBaseName}"
 
 # Copy file(s) using faster arcfour256 cipher - This for this cipher must be added to sshd config file
 # A public ssh key needs to be set up to avoid authentication requests from scp
-scp -o Cipher=arcfour256 "$scpFilePathSource" "$REMOTE_PATH"
+scp -o Cipher=arcfour256 "$scpFilePathSource" "$REMOTE_DESTINATION_PATH"
 	else
 echo ""
 #echo "$TriggerFilePath File has been removed from watchfolder"
