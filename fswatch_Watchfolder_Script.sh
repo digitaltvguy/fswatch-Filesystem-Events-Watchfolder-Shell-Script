@@ -7,15 +7,13 @@
 
 # ********************************************************
 #           REMINDERS
-# 1. Check that aes256-ctr is a default cipher using "ssh -Q cipher" .
+# 1. Choose your default cipher in the configure section (use "ssh -Q cipher" to see which ciphers your client supports
 # 2. Add public key from your source machine to destination server to avoid authentication request for scp copy
 # (https://www.linode.com/docs/security/use-public-key-authentication-with-ssh)
 # 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to manage logs
 # (http://www.real-world-systems.com/docs/newsyslog.1.html)
 #
 # ********************************************************
-
-
 
 # identify location of fswatch binary
 FSWATCH_PATH="/usr/local/bin/fswatch"
@@ -26,7 +24,6 @@ LOG_FILE_PATH="/Library/Logs/fswatch_watchfolder.log"
 exec >> "$LOG_FILE_PATH"
 exec 2>&1
 
-
 # identify local location of Watchfolder
 LOCAL_WATCHFOLDER_PATH="<Path to WatchFolder>"
 
@@ -34,6 +31,9 @@ LOCAL_WATCHFOLDER_PATH="<Path to WatchFolder>"
 TARGET_TRANSITION_PATH="<Path to Transition Folder>"
 # Set remote path if using remote destination
 REMOTE_DESTINATION_PATH="user@<IP>:<REMOTE PATH>"
+
+# Choose cipher to use for SSH (choices best choices arcfour256, aes256-ctr, aes128-ctr)
+SSH_cipher="aes128-ctr"
 
 # fswatch parameter to control how often a trigger will be detected when watching for a folder change
 LATENCY=3
@@ -90,7 +90,7 @@ echo "Copying "$TriggerFileBaseName" to Destination Server"
 	--size-only \
     --include-from="$TempFileName" \
     --stats \
-    -e "ssh -T -c aes256-ctr -o Compression=no -x" \
+    -e "ssh -T -c "$SSH_cipher" -o Compression=no -x" \
     "$scpFilePathSource" "$REMOTE_DESTINATION_PATH" \
     | tee -a "$LOG_FILE_PATH"
 	else
