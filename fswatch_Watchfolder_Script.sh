@@ -8,8 +8,11 @@
 # ********************************************************
 #           REMINDERS
 # 1. Add Arcfour256 to sshd_config file for the fastest transfer speeds (be aware of security implications)
+# (
 # 2. Add public key from your source machine to destination server to avoid authentication request for scp copy
+# (https://www.linode.com/docs/security/use-public-key-authentication-with-ssh)
 # 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to manage logs
+# (http://www.real-world-systems.com/docs/newsyslog.1.html)
 #
 # ********************************************************
 
@@ -88,7 +91,7 @@ echo "Copying "$TriggerFileBaseName" to Destination Server"
 	--size-only \
     --include-from="$TempFileName" \
     --stats \
-    -e "ssh -T -c arcfour256 -o Compression=no -x" \
+    -e "ssh -T -c aes256-ctr -o Compression=no -x" \
     "$scpFilePathSource" "$REMOTE_DESTINATION_PATH" \
     | tee -a "$LOG_FILE_PATH"
 	else
