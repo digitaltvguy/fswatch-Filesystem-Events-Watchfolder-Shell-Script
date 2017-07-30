@@ -13,3 +13,6 @@ folder occurs
 If a file is removed from the watch folder, the script checks for this
 false event by examining the folder for the same file.  If it doesn’t exist,
 the event is ignored.
+
+
+***** MUST CONFIGURE LINES WITHIN CONFIGURATION SECTION ******
