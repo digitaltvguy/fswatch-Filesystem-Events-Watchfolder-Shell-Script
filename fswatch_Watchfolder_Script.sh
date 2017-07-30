@@ -7,7 +7,7 @@
 
 # ********************************************************
 #           REMINDERS
-# 1. Add Arcfour256 to sshd_config file
+# 1. Add Arcfour256 to sshd_config file for the fastest transfer speeds (be aware of security implications)
 # 2. Add public key from your source machine to destination server to avoid authentication request for scp copy
 # 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to manage logs
 #
