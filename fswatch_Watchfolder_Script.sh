@@ -24,6 +24,10 @@ LOG_FILE_PATH="/Library/Logs/fswatch_watchfolder.log"
 exec >> "$LOG_FILE_PATH"
 exec 2>&1
 
+# Please select an operating system type (Can be "MacOS", "Linux")
+# This is the beginning of logic to choose event types to detect
+PlatformOS=MacOS
+
 # identify local location of Watchfolder
 LOCAL_WATCHFOLDER_PATH="<Path to WatchFolder>"
 
@@ -44,8 +48,10 @@ LATENCY=3
 
 
 # Watch for changes and sync (exclude hidden files)
+# MacOS event types to trigger on = "Updated" or "Renamed"
+# Linux event types to trigger on = "
 echo    "Watching for changes. Quit anytime with Ctrl-C."
-${FSWATCH_PATH} -0 --event Updated --event Renamed -l $LATENCY $LOCAL_WATCHFOLDER_PATH --exclude="/\.[^/]*$" \
+${FSWATCH_PATH} -0 --event Updated --event Renamed --event MovedTo -l $LATENCY $LOCAL_WATCHFOLDER_PATH --exclude="/\.[^/]*$" \
 | while read -d "" event
   do
 # Create Unique temp file name  
