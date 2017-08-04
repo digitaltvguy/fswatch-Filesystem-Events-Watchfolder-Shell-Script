@@ -10,10 +10,9 @@
 # 1. Choose your default cipher in the configure section (use "ssh -Q cipher" to see which ciphers your client supports
 # 2. Add public key from your source machine to destination server to avoid authentication request for scp copy
 # (https://www.linode.com/docs/security/use-public-key-authentication-with-ssh)
-# 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to manage logs
-# (http://www.real-world-systems.com/docs/newsyslog.1.html)
+# 3. Remember to setup log cleanup system using operating system specific functionality (MacOS-newsyslogd; Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to manage logs
+# (http://www.real-world-systems.com/docs/newsyslog.1.html).
 # 4. Put this script into a service (using operating system specific methods) (MacOS-Launchd, CentOS-systemd, etc.)
-# 5. Remember to setup log cleanup using operating system specific functionality (MacOS-newsyslogd)
 #
 # ********************************************************
 
