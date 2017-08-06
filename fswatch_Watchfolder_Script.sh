@@ -63,7 +63,6 @@ ${FSWATCH_PATH} -0 \
 -e ".*" --include '.*\.[mov|mxf]' \
 --event Updated --event Renamed --event MovedTo -l $LATENCY \
 $LOCAL_WATCHFOLDER_PATH \
---exclude="/\.[^/]*$" \
 | while read -d "" event
   do
 # Create Unique temp file name  
