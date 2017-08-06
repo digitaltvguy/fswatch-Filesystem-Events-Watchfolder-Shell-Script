@@ -61,7 +61,7 @@ LATENCY=3
 echo    "Watching for changes. Quit anytime with Ctrl-C."
 ${FSWATCH_PATH} -0 \
 -e ".*" --include '.*\.[mov|mxf]' \
---event Updated --event Renamed -l $LATENCY \
+--event Updated --event Renamed --event MovedTo -l $LATENCY \
 $LOCAL_WATCHFOLDER_PATH \
 --exclude="/\.[^/]*$" \
 | while read -d "" event
