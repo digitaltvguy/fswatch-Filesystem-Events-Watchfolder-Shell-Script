@@ -27,13 +27,13 @@ FSWATCH_PATH="/usr/local/bin/fswatch"
 sshPath="/usr/bin/ssh"
 
 # Redirect Log location ***REMEMBER TO CREATE the file fswatch_watchfolder.log and set permissions to 777***
-LOG_FILE_PATH="/Library/Logs/fswatch_watchfolder.log"    
+LOG_FILE_PATH="<path to log file>"    
 exec >> "$LOG_FILE_PATH"
 exec 2>&1
 
 
 # identify local location of Watchfolder
-LOCAL_WATCHFOLDER_PATH="/Users/cseeger/Desktop/___WATCH/"
+LOCAL_WATCHFOLDER_PATH="local filesystem watchfolder path>"
 
 # Choose cipher to use for SSH (choices best choices arcfour256, aes256-ctr, aes128-ctr)
 SSH_cipher="aes128-ctr"
@@ -42,9 +42,9 @@ SSH_cipher="aes128-ctr"
 FileExtensionFilter='mov|mxf'
 
 # Set Finished File Folder Path
-TARGET_TRANSITION_PATH="/Users/cseeger/Desktop/___Destination/"
+TARGET_TRANSITION_PATH="<target path>"
 # Set remote path if using remote destination
-REMOTE_DESTINATION_PATH="nimda@192.168.1.56:/Users/nimda/Desktop/__REMOTE_FOLDER/"
+REMOTE_DESTINATION_PATH="user@IP:remote path>"
 
 # fswatch parameter to control how often a trigger will be detected when watching for a folder change
 LATENCY=3
