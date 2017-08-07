@@ -17,7 +17,7 @@
 # 1. Add Arcfour256 to sshd_config file
 # 2. Add public key from your source machine to destination server to avoid authentication request for scp copy
 # 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to manage logs
-# 4. Scroll down to rsync lines to change file extension filters (they're currently set to sync mov and mxf only
+# 4. Set file system extension variable.  This will filter file system events
 #
 # ********************************************************
 
@@ -38,8 +38,8 @@ LOCAL_WATCHFOLDER_PATH="/Users/cseeger/Desktop/___WATCH/"
 # Choose cipher to use for SSH (choices best choices arcfour256, aes256-ctr, aes128-ctr)
 SSH_cipher="aes128-ctr"
 
-# File Extensions to filter with rsync
-RsyncFileExtensionFilter='{mov,mxf}'
+# File Extensions to filter with fswatch (ie- 'mov|mxf|tif') always separate with a pipe "|"
+FileExtensionFilter='mov|mxf'
 
 # Set Finished File Folder Path
 TARGET_TRANSITION_PATH="/Users/cseeger/Desktop/___Destination/"
@@ -53,12 +53,17 @@ LATENCY=3
 # CONFIGURE END
 # ********************************************************
 
+FilterExpression=".*\.("$FileExtensionFilter")$"
+echo "$FilterExpression"
+
 # Watch for changes and sync (exclude hidden files)
 echo    "Watching for changes. Quit anytime with Ctrl-C."
 ${FSWATCH_PATH} -0 \
---exclude="/\.[^/]*$" \
---event Updated --event Renamed --event MovedTo -l $LATENCY \
-$LOCAL_WATCHFOLDER_PATH \
+	-e ".*" \
+	-IEi "$FilterExpression" \
+	--exclude="/\.[^/]*$" \
+	--event Updated --event Renamed --event MovedTo -l $LATENCY \
+	$LOCAL_WATCHFOLDER_PATH \
 | while read -d "" event
   do
 # Create Unique temp file name  
@@ -75,7 +80,7 @@ $LOCAL_WATCHFOLDER_PATH \
 
 # Store trigger file path in variable
 TriggerFilePath="`cat $TempFileName`"
-#echo "$TriggerFilePath"
+echo "$TriggerFilePath"
 
 # Get base name of Trigger File
 TriggerFileBaseName=`echo "$TriggerFilePath" | sed 's/.*\///'`
@@ -102,8 +107,6 @@ scpFilePathSource="${TARGET_TRANSITION_PATH}${TriggerFileBaseName}"
 echo "Copying "$TriggerFileBaseName" to Destination Server"
 	rsync -aW \
 	--size-only \
-	--include='*.'{mov,mxf} \
-	--exclude '*' \
     --include-from="$TempFileName" \
     --stats \
     -e "ssh -T -c "$SSH_cipher" -o Compression=no -x" \
