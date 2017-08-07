@@ -13,8 +13,9 @@ It looks for to fswatch event names "Updated" and "Renamed" so files don't trigg
 
 "Renamed" event accepts file moves into the watch folder
 
-"Updated" accepts a “file-closed” event after a file copy into the watch
-folder occurs
+"Updated" accepts a “file-closed” event after a file copy into the watch folder occurs
+
+"MovedTo" event is operating system specific to Linux and identifies file moves into the watchfolder
 
 If a file is removed from the watch folder, the script checks for this
 false event by examining the folder for the same file.  If it doesn’t exist,
