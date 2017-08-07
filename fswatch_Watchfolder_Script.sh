@@ -3,7 +3,7 @@
 # ********************************************************
 # FSWATCH-based Watchfolder script optimized for Media File movement
 #
-# Chris Seeger     August 6th, 2017
+# Chris Seeger     July 30th, 2017
 #
 # ********************************************************
 
@@ -17,7 +17,7 @@
 # 1. Add Arcfour256 to sshd_config file
 # 2. Add public key from your source machine to destination server to avoid authentication request for scp copy
 # 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to manage logs
-# 4. Scroll down to rsync lines to change file extension filters (they're currently set to sync mov and mxf only)
+# 4. Scroll down to rsync lines to change file extension filters (they're currently set to sync mov and mxf only
 #
 # ********************************************************
 
@@ -37,6 +37,9 @@ LOCAL_WATCHFOLDER_PATH="/Users/cseeger/Desktop/___WATCH/"
 
 # Choose cipher to use for SSH (choices best choices arcfour256, aes256-ctr, aes128-ctr)
 SSH_cipher="aes128-ctr"
+
+# File Extensions to filter with rsync
+RsyncFileExtensionFilter='{mov,mxf}'
 
 # Set Finished File Folder Path
 TARGET_TRANSITION_PATH="/Users/cseeger/Desktop/___Destination/"
@@ -99,8 +102,7 @@ scpFilePathSource="${TARGET_TRANSITION_PATH}${TriggerFileBaseName}"
 echo "Copying "$TriggerFileBaseName" to Destination Server"
 	rsync -aW \
 	--size-only \
-	--include='*/' \
-	--include '*.mov' '*.mxf' \
+	--include='*.'{mov,mxf} \
 	--exclude '*' \
     --include-from="$TempFileName" \
     --stats \
