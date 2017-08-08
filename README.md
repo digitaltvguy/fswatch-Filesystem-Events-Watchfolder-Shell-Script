@@ -1,7 +1,7 @@
 # fswatch_watchfolder_script
 
-** A "file-system events" script built to avoid scanning a folder.**
-** Using operating system specific filesystem events it also monitors for "growing files" before acting**
+** A "file-system events" script built to avoid scanning a folder
+Using operating system specific filesystem events it also monitors for "growing files" before acting**
 
 It looks for to fswatch event names "Updated", "Renamed", "MovedTo" so files don't trigger until ready.
 
