@@ -24,6 +24,7 @@
 # identify location of fswatch and ssh binaries
 FSWATCH_PATH="/usr/local/bin/fswatch"
 sshPath="/usr/bin/ssh"
+rsyncPath="/usr/bin/rsync"
 
 # Redirect Log location ***REMEMBER*** TO CREATE the file fswatch_watchfolder.log file
 # and set permissions appropriately so that the script service can write to it 
@@ -108,17 +109,17 @@ echo "$TriggerFilePath File exists in watchfolder"
 echo "Moving file to Transition Folder"
 mv "$TriggerFilePath" "$TARGET_TRANSITION_PATH"
 #echo "$TriggerFileBaseName"
-scpFilePathSource="${TARGET_TRANSITION_PATH}${TriggerFileBaseName}"
+TransitionFilePathSource="${TARGET_TRANSITION_PATH}${TriggerFileBaseName}"
 
 # Copy file(s) using faster arcfour256 cipher - This for this cipher must be added to sshd config file
 # A public ssh key needs to be set up to avoid authentication requests from scp
 echo "Copying "$TriggerFileBaseName" to Destination Server"
-	rsync -aW \
+	$rsyncPath -aW \
 	--size-only \
     --include-from="$TempFileName" \
     --stats \
-    -e "ssh -T -c "$SSH_cipher" -o Compression=no -x" \
-    "$scpFilePathSource" "$REMOTE_DESTINATION_PATH" \
+    -e "$sshPath -T -c "$SSH_cipher" -o Compression=no -x" \
+    "$TransitionFilePathSource" "$REMOTE_DESTINATION_PATH" \
     | tee -a "$LOG_FILE_PATH"
 	else
 echo ""
