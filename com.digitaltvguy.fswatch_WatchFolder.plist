@@ -16,7 +16,7 @@
 	<string>com.digitaltvguy.fswatch_WatchFolder</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Library/Scripts/__WatchFolder_Scripts/fswatch_WatchFolderScript_Final_v1.sh</string>
+		<string>/Library/Scripts/__WatchFolder_Scripts//fswatch_Watch_Script_MacOS_Linux.sh</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
