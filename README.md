@@ -1,11 +1,9 @@
 # fswatch_watchfolder_script
-shell script for fswatch which checks watchfolder for new files via event type flags and delivers via scp to destination
 
-**MOST IMPORTANT - IT WATCHES FOR FILES THAT ARE COPYING AND ONLY SENDS A TRIGGER WHEN THE FILE COPY IS COMPLETED**
+** A "file-system events" script built to avoid scanning a folder.**
+** Using operating system specific filesystem events it also monitors for "growing files" before acting**
 
-This script uses file system events to check a watchfolder and transfers the file to a remote server
-
-It looks for to fswatch event names "Updated" and "Renamed" so files don't trigger until ready.
+It looks for to fswatch event names "Updated", "Renamed", "MovedTo" so files don't trigger until ready.
 
 "Renamed" event accepts file moves into the watch folder
 
@@ -14,7 +12,7 @@ It looks for to fswatch event names "Updated" and "Renamed" so files don't trigg
 "MovedTo" event is operating system specific to Linux and identifies file moves into the watchfolder
 
 If a file is removed from the watch folder, the script checks for this
-false event by examining the folder for the same file.  If it doesn’t exist,
+false event by examining the folder for the same file.  If the file doesn’t exist,
 the event is ignored.
 
 
