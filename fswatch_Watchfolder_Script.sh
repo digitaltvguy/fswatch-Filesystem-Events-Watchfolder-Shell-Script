@@ -11,7 +11,6 @@
 # ********************************************************
 # CONFIGURE START
 # ********************************************************
-
 # ********************************************************
 #           REMINDERS
 # 1. Add Arcfour256 to sshd_config file
@@ -22,18 +21,19 @@
 # ********************************************************
 
 
-# identify location of fswatch binary
+# identify location of fswatch and ssh binaries
 FSWATCH_PATH="/usr/local/bin/fswatch"
 sshPath="/usr/bin/ssh"
 
-# Redirect Log location ***REMEMBER TO CREATE the file fswatch_watchfolder.log and set permissions to 777***
+# Redirect Log location ***REMEMBER*** TO CREATE the file fswatch_watchfolder.log file
+# and set permissions appropriately so that the script service can write to it 
 LOG_FILE_PATH="<path to log file>"    
 exec >> "$LOG_FILE_PATH"
 exec 2>&1
 
 
 # identify local location of Watchfolder
-LOCAL_WATCHFOLDER_PATH="local filesystem watchfolder path>"
+LOCAL_WATCHFOLDER_PATH="<local filesystem watchfolder path>"
 
 # Choose cipher to use for SSH (choices best choices arcfour256, aes256-ctr, aes128-ctr)
 SSH_cipher="aes128-ctr"
@@ -44,13 +44,21 @@ FileExtensionFilter='mov|mxf'
 # Set Finished File Folder Path
 TARGET_TRANSITION_PATH="<target path>"
 # Set remote path if using remote destination
-REMOTE_DESTINATION_PATH="user@IP:remote path>"
+REMOTE_DESTINATION_PATH="<user@IP:remote path>"
 
-# fswatch parameter to control how often a trigger will be detected when watching for a folder change
+# Amount of time that passes between the moment fswatch outputs a set of detected changes
+# and the next. What happens in-between events is a monitor-specific detail
+#
 LATENCY=3
 
 # ********************************************************
 # CONFIGURE END
+# ********************************************************
+#
+# ***DO NOT MODIFY BELOW THIS LINE****
+#
+# ***DO NOT MODIFY BELOW THIS LINE****
+#
 # ********************************************************
 
 FilterExpression=".*\.("$FileExtensionFilter")$"
