@@ -3,7 +3,7 @@
 # ********************************************************
 # FSWATCH-based Watchfolder script optimized for Media File movement
 #
-# Chris Seeger     July 30th, 2017
+# Chris Seeger     August 8th, 2017
 #
 # ********************************************************
 
