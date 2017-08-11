@@ -15,10 +15,10 @@
 # ********************************************************
 # ********************************************************
 #           REMINDERS
-# 1. Add Arcfour256 to sshd_config file
+# 1. Add ciphers of your choice to sshd_config file (use "ssh -Q cipher" to see what your computer supports
 # 2. Add public key from your source machine to destination server to avoid authentication request for scp copy
-# 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to manage logs
-# 4. Set file system extension variable.  This will filter file system events
+# 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to roll logs automatically
+# 4. Set file system extension variable.  This will filter file system events on MacOS and Linux
 #
 # ********************************************************
 
