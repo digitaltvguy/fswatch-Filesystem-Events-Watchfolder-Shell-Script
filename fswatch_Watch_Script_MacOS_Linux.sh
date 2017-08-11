@@ -3,6 +3,8 @@
 # ********************************************************
 # FSWATCH-based Watchfolder script optimized for Media File movement
 #
+# Includes syntax for hpn-ssh enabled systems
+#
 # Chris Seeger     August 8th, 2017
 #
 # ********************************************************
@@ -122,6 +124,13 @@ echo "Copying "$TriggerFileBaseName" to Destination Server"
     "$TransitionFilePathSource" "$REMOTE_DESTINATION_PATH" \
     | tee -a "$LOG_FILE_PATH"
 	else
+
+# Replacement line for above rsync routine with un-patched ssh (not hpn-ssh)
+#    -e "ssh -T -c "$SSH_cipher" -o Compression=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -x" \
+
+# Replacement line for above rsync routine with using hpn-ssh
+#    -e "ssh -T -oNoneSwitch=yes -oNoneEnabled=yes -o Compression=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -x" \
+
 echo ""
 #echo "$TriggerFilePath File has been removed from watchfolder"
 fi
