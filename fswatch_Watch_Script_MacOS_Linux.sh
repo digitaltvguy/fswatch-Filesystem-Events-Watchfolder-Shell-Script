@@ -3,8 +3,6 @@
 # ********************************************************
 # FSWATCH-based Watchfolder script optimized for Media File movement
 #
-# Includes syntax for hpn-ssh enabled systems
-#
 # Chris Seeger     August 8th, 2017
 #
 # ********************************************************
@@ -15,10 +13,10 @@
 # ********************************************************
 # ********************************************************
 #           REMINDERS
-# 1. Add ciphers of your choice to sshd_config file (use "ssh -Q cipher" to see what your computer supports
+# 1. Check compatible ciphers for ssh and pick one that you feel comfortable with arcfour256 and aes128-ctr are faster
 # 2. Add public key from your source machine to destination server to avoid authentication request for scp copy
-# 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to roll logs automatically
-# 4. Set file system extension variable.  This will filter file system events on MacOS and Linux
+# 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to manage logs
+# 4. Set file system extension variable.  This will filter file system events
 #
 # ********************************************************
 
@@ -28,15 +26,13 @@ FSWATCH_PATH="/usr/local/bin/fswatch"
 sshPath="/usr/bin/ssh"
 rsyncPath="/usr/bin/rsync"
 
+
 # Redirect Log location ***REMEMBER*** TO CREATE the file fswatch_watchfolder.log file
 # and set permissions appropriately so that the script service can write to it 
-LOG_FILE_PATH="<path to log file>"    
+LOG_FILE_PATH="/Library/Logs/fswatch_watchfolder.log"    
 exec >> "$LOG_FILE_PATH"
 exec 2>&1
 
-
-# identify local location of Watchfolder
-LOCAL_WATCHFOLDER_PATH="<local filesystem watchfolder path>"
 
 # Choose cipher to use for SSH (choices best choices arcfour256, aes256-ctr, aes128-ctr)
 SSH_cipher="aes128-ctr"
@@ -44,10 +40,15 @@ SSH_cipher="aes128-ctr"
 # File Extensions to filter with fswatch (ie- 'mov|mxf|tif') always separate with a pipe "|"
 FileExtensionFilter='mov|mxf'
 
+
+# identify local location of Watchfolder
+LOCAL_WATCHFOLDER_PATH="<path to watchfolder>"
 # Set Finished File Folder Path
-TARGET_TRANSITION_PATH="<target path>"
+TARGET_TRANSITION_PATH="<path to transition folder>"
 # Set remote path if using remote destination
-REMOTE_DESTINATION_PATH="<user@IP:remote path>"
+REMOTE_DESTINATION_PATH="<path to remote destination>"
+# Set path to folder with files that have been completely transfered to destination
+COMPLETED_FILES_PATH="<path to finished files folder>"
 
 # Amount of time that passes between the moment fswatch outputs a set of detected changes
 # and the next. What happens in-between events is a monitor-specific detail
@@ -100,6 +101,7 @@ TriggerFileBaseName=`echo "$TriggerFilePath" | sed 's/.*\///'`
 # echo "$TriggerFilePath"
 # cat "$TempFileName"
 
+
 # Wait for files to be moved
 sleep 1
 
@@ -113,10 +115,16 @@ mv "$TriggerFilePath" "$TARGET_TRANSITION_PATH"
 #echo "$TriggerFileBaseName"
 TransitionFilePathSource="${TARGET_TRANSITION_PATH}${TriggerFileBaseName}"
 
+/usr/bin/osascript <<EOF
+display notification "Has Been Added To the WatchFolder" with title "Watchfolder File Transfer Starting" subtitle "$TriggerFileBaseName"
+EOF
+
+
 # Copy file(s) using faster arcfour256 cipher - This for this cipher must be added to sshd config file
 # A public ssh key needs to be set up to avoid authentication requests from scp
 echo "Copying "$TriggerFileBaseName" to Destination Server"
-	$rsyncPath -aW \
+	$rsyncPath -a \
+	--whole-file \
 	--size-only \
     --include-from="$TempFileName" \
     --stats \
@@ -139,6 +147,7 @@ sleep 2
 
 # Removing temp event file and looping to next event
  rm "$TempFileName"
+
 
 
 done
