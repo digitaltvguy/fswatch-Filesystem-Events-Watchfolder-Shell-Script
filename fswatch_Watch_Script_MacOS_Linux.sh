@@ -115,6 +115,7 @@ mv "$TriggerFilePath" "$TARGET_TRANSITION_PATH"
 #echo "$TriggerFileBaseName"
 TransitionFilePathSource="${TARGET_TRANSITION_PATH}${TriggerFileBaseName}"
 
+# OSX-specific - Send Applescript to Notification System when a file has been added to Watchfolder
 /usr/bin/osascript <<EOF
 display notification "Has Been Added To the WatchFolder" with title "Watchfolder File Transfer Starting" subtitle "$TriggerFileBaseName"
 EOF
@@ -132,6 +133,8 @@ echo "Copying "$TriggerFileBaseName" to Destination Server"
     "$TransitionFilePathSource" "$REMOTE_DESTINATION_PATH" \
     | tee -a "$LOG_FILE_PATH"
 	else
+echo ""
+#echo "$TriggerFilePath File has been removed from watchfolder"
 
 # Replacement line for above rsync routine with un-patched ssh (not hpn-ssh)
 #    -e "ssh -T -c "$SSH_cipher" -o Compression=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -x" \
@@ -139,14 +142,21 @@ echo "Copying "$TriggerFileBaseName" to Destination Server"
 # Replacement line for above rsync routine with using hpn-ssh
 #    -e "ssh -T -oNoneSwitch=yes -oNoneEnabled=yes -o Compression=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -x" \
 
-echo ""
-#echo "$TriggerFilePath File has been removed from watchfolder"
 fi
-
 sleep 2
 
 # Removing temp event file and looping to next event
  rm "$TempFileName"
+ 
+
+echo "The file transfer has completed.  Now moving file to Completed Files Folder"
+mv "$TransitionFilePathSource" "$COMPLETED_FILES_PATH"
+
+
+# OSX-specific - Send Applescript to Notification System when file transfer to destination has completed.
+/usr/bin/osascript <<EOF
+display notification "Has Been Moved To the Remote Destination" with title "Watchfolder File Transfer Ending" subtitle "$TriggerFileBaseName"
+EOF
 
 
 
