@@ -17,6 +17,7 @@
 # 2. Add public key from your source machine to destination server to avoid authentication request for scp copy
 # 3. Add config file to /etc/newssyslog.d folder (fswatch_watchfolder.conf) to manage logs
 # 4. Set file system extension variable.  This will filter file system events
+# 5. Comment "#" to all three lines for MacOS "Notification Center" support (below) if using Linux.
 #
 # ********************************************************
 
