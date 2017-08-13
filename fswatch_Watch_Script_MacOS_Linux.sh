@@ -140,7 +140,7 @@ echo ""
 #    -e "ssh -T -c "$SSH_cipher" -o Compression=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -x" \
 
 # Replacement line for above rsync routine with using hpn-ssh
-#    -e "ssh -T -oNoneSwitch=yes -oNoneEnabled=yes -o Compression=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -x" \
+#    -e "ssh -T -oNoneSwitch=yes -oNoneEnabled=yes -oHPNBufferSize=65536 -o Compression=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -x" \
 
 fi
 sleep 2
