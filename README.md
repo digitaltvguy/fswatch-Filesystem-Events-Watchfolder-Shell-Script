@@ -1,4 +1,4 @@
-# fswatch_watchfolder_script
+# fswatch Filesystem Events WatchFolder Shell Script
 
 ** A "file-system events" script built to avoid scanning a folder
 Using operating system specific filesystem events it also monitors for "growing files" before triggering an action**
