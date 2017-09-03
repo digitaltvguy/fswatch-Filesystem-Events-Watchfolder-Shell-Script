@@ -23,9 +23,10 @@
 
 
 # identify location of fswatch and ssh binaries
+# **This has HomeBrew paths for newer ssh and rsync to optimize transfer speed**
 FSWATCH_PATH="/usr/local/bin/fswatch"
-sshPath="/usr/bin/ssh"
-rsyncPath="/usr/bin/rsync"
+sshPath="/usr/local/bin/ssh"
+rsyncPath="/usr/local/bin/rsync"
 
 
 # Redirect Log location ***REMEMBER*** TO CREATE the file fswatch_watchfolder.log file
@@ -130,7 +131,7 @@ echo "Copying "$TriggerFileBaseName" to Destination Server"
 	--size-only \
     --include-from="$TempFileName" \
     --stats \
-    -e "$sshPath -T -c "$SSH_cipher" -o Compression=no -x" \
+    -e "$sshPath -T -c "$SSH_cipher" -o Compression=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -x" \
     "$TransitionFilePathSource" "$REMOTE_DESTINATION_PATH" \
     | tee -a "$LOG_FILE_PATH"
 	else
