@@ -18,6 +18,10 @@
 	<array>
 		<string>/Library/Scripts/__WatchFolder_Scripts//fswatch_Watch_Script_MacOS_Linux.sh</string>
 	</array>
+	<key>StandardOutPath</key>
+		<string>/Library/Logs/fswatch_watchfolder.log</string>
+	<key>StandardErrorPath</key>
+		<string>/Library/Logs/fswatch_watchfolder.log</string>
 	<key>RunAtLoad</key>
 	<true/>
 </dict>
